@@ -13,7 +13,7 @@ const CONFIG = {
   emailDiizinkan: [
     "sahruldara31@gmail.com",
     "daralthfna@gmail.com",
-    "sahrul22032006@gmail.com"
+    "sahrul22032006@gmail.com",
     "saputrasahrir@gmai.com",
   ],
 
