@@ -9,17 +9,29 @@ const CONFIG = {
 
   googleClientId: "262812287582-jn0a6730fmnkaned34qqai4hrjm8ph7k.apps.googleusercontent.com",
 
-  // SEMUA akun yang boleh masuk (perhatikan: tiap baris diakhiri koma!)
   emailDiizinkan: [
     "sahruldara31@gmail.com",
     "daralthfna@gmail.com",
     "sahrul22032006@gmail.com",
-    "TULIS_GMAIL_BARU_DISINI@gmail.com"
+    "saputrasahir@gmail.com"
   ],
 
-  emailPemilikDrive: "sahruldara31@gmail.com",
+  // siapa pemilik tiap email (untuk ruang privat)
+  petaEmail: {
+    "sahruldara31@gmail.com"   : "Sahrul",
+    "sahrul22032006@gmail.com" : "Sahrul",
+    "saputrasahir@gmail.com"   : "Sahrul",
+    "daralthfna@gmail.com"     : "Dara"
+  },
 
-  driveFolderName: "Momen Kita 🤍",
+  emailPemilikDrive: "sahruldara31@gmail.com",
+  driveFolderName  : "Momen Kita 🤍",
+
+  // folder rahasia pribadi — TIDAK dibagikan ke siapa pun
+  namaFolderPrivat: {
+    Sahrul: "Ruang Privat Sahrul 🤫",
+    Dara  : "Ruang Privat Dara 🤫"
+  },
 
   zonaWaktu: {
     sulawesi: "Asia/Makassar",
