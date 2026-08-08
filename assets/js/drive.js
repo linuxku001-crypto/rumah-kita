@@ -109,3 +109,53 @@ async function daftarMomen(folderId) {
 function esc(s) {
   return String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
+
+/* ============ RUANG PRIVAT (buku harian masing-masing) ============ */
+async function dapatkanFolderPrivat(nama) {
+  const namaFolder = CONFIG.namaFolderPrivat[nama];
+  const q = encodeURIComponent(`name='${namaFolder}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);
+  const data = await apiDrive(`files?q=${q}&fields=files(id,name)`);
+  if (data.files.length) return data.files[0].id;
+
+  const saya = await emailSaya();
+  if ((CONFIG.petaEmail[saya] || "") !== nama) throw new Error("bukan-punya");
+  const buat = await apiDrive("files", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: namaFolder, mimeType: "application/vnd.google-apps.folder" })
+  });
+  return buat.id; // sengaja TIDAK di-share — hanya kamu & Google
+}
+
+async function uploadPrivat(teks, nama) {
+  const folderId = await dapatkanFolderPrivat(nama);
+  const now = new Date().toISOString();
+  const metadata = {
+    name: "Privat — " + now + ".txt",
+    parents: [folderId],
+    description: JSON.stringify({ caption: teks, oleh: nama, waktu: now })
+  };
+  const res = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + tokenDrive, "Content-Type": "application/json" },
+    body: JSON.stringify(metadata)
+  });
+  if (!res.ok) throw new Error((await res.text()).slice(0, 200));
+  const lokasi = res.headers.get("Location");
+  const put = await fetch(lokasi, {
+    method: "PUT",
+    headers: { "Content-Type": "text/plain" },
+    body: new Blob([teks], { type: "text/plain" })
+  });
+  if (!put.ok) throw new Error((await put.text()).slice(0, 200));
+  return (await put.json()).id;
+}
+
+async function daftarPrivat(folderId) {
+  const q = encodeURIComponent(`'${folderId}' in parents and trashed=false`);
+  const data = await apiDrive(`files?q=${q}&orderBy=createdTime desc&pageSize=1000&fields=files(id,name,mimeType,description,createdTime)`);
+  return data.files.map(f => {
+    let meta = {}; try { meta = JSON.parse(f.description || "{}"); } catch {}
+    return { ...f, meta };
+  });
+}
