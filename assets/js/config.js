@@ -9,15 +9,14 @@ const CONFIG = {
 
   googleClientId: "262812287582-jn0a6730fmnkaned34qqai4hrjm8ph7k.apps.googleusercontent.com",
 
-  // SEMUA akun yang boleh masuk ke rumah (sesuai test users kamu)
+  // SEMUA akun yang boleh masuk (perhatikan: tiap baris diakhiri koma!)
   emailDiizinkan: [
     "sahruldara31@gmail.com",
     "daralthfna@gmail.com",
     "sahrul22032006@gmail.com",
-    "saputrasahrir@gmai.com",
+    "TULIS_GMAIL_BARU_DISINI@gmail.com"
   ],
 
-  // Drive penyimpanan utama (folder dibuat di akun ini)
   emailPemilikDrive: "sahruldara31@gmail.com",
 
   driveFolderName: "Momen Kita 🤍",
